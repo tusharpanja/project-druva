@@ -1,0 +1,19 @@
+body::before{
+    display: block;
+    content: '';
+    height: 60px;
+   
+}
+*{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+@media(min-width: 768px){
+    .news-input{
+        width: 50%;
+    }
+}
+.nav-item:hover{
+    background-color: rgba(0,0,0, 0.2);
+    
+}

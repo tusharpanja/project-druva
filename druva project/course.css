@@ -1,0 +1,17 @@
+body{
+    display: block;
+    content: '';
+    height: 60px;
+    margin:0px;
+
+   
+}
+*{
+    font-family: 'Courier New', Courier, monospace;
+}
+.nav-item:hover{
+    background-color: rgba(0,0,0, 0.2);
+    
+}
+
+
