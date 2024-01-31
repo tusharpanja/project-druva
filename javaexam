@@ -1,77 +1,108 @@
-import java.util.*;
+import java.util.Scanner;
 
-class ParticipantInfo {
-    private Map<String, Integer> participantMap;
+class Insurance {
+    private String policyNumber;
+    private String insuranceProvider;
+    private double coverageAmount;
+    private String coverageType;
+    private int durationInYears;
 
-    public ParticipantInfo() {
-        participantMap = new HashMap<>();
+    public Insurance(String policyNumber, String insuranceProvider, double coverageAmount, String coverageType, int durationInYears) {
+        this.policyNumber = policyNumber;
+        this.insuranceProvider = insuranceProvider;
+        this.coverageAmount = coverageAmount;
+        this.coverageType = coverageType;
+        this.durationInYears = durationInYears;
     }
 
-    public Map<String, Integer> getParticipantMap() {
-        return participantMap;
+    public String getPolicyNumber() {
+        return policyNumber;
     }
 
-    public void setParticipantMap(Map<String, Integer> participantMap) {
-        this.participantMap = participantMap;
+    public void setPolicyNumber(String policyNumber) {
+        this.policyNumber = policyNumber;
     }
 
-    public int findTheIQLevelForGivenParticipantName(String participantName) {
-        if (participantMap.containsKey(participantName.toLowerCase())) {
-            return participantMap.get(participantName.toLowerCase());
-        } else {
-            return -1; // Return -1 to indicate participant not found
+    public String getInsuranceProvider() {
+        return insuranceProvider;
+    }
+
+    public void setInsuranceProvider(String insuranceProvider) {
+        this.insuranceProvider = insuranceProvider;
+    }
+
+    public double getCoverageAmount() {
+        return coverageAmount;
+    }
+
+    public void setCoverageAmount(double coverageAmount) {
+        this.coverageAmount = coverageAmount;
+    }
+
+    public String getCoverageType() {
+        return coverageType;
+    }
+
+    public void setCoverageType(String coverageType) {
+        this.coverageType = coverageType;
+    }
+
+    public int getDurationInYears() {
+        return durationInYears;
+    }
+
+    public void setDurationInYears(int durationInYears) {
+        this.durationInYears = durationInYears;
+    }
+
+    public double calculateMaturityAmount() {
+        if (coverageAmount <= 0 || durationInYears <= 0) {
+            return -1;
         }
-    }
 
-    public List<String> findTheHighestIQLevel() {
-        List<String> highestIQParticipants = new ArrayList<>();
-        int highestIQ = Integer.MIN_VALUE;
-
-        for (Map.Entry<String, Integer> entry : participantMap.entrySet()) {
-            if (entry.getValue() > highestIQ) {
-                highestIQ = entry.getValue();
-                highestIQParticipants.clear();
-                highestIQParticipants.add(entry.getKey());
-            } else if (entry.getValue() == highestIQ) {
-                highestIQParticipants.add(entry.getKey());
-            }
+        double maturityAmount = coverageAmount;
+        for (int i = 0; i < durationInYears; i++) {
+            maturityAmount += (maturityAmount * 0.05);
         }
 
-        return highestIQParticipants;
+        return maturityAmount;
     }
 }
 
-public class IQLevelApp {
+public class UserInterface {
+    public static Insurance extractDetails(String insuranceDetails) {
+        String[] details = insuranceDetails.split(":");
+        if (details.length == 5) {
+            return new Insurance(details[0], details[1], Double.parseDouble(details[2]), details[3], Integer.parseInt(details[4]));
+        } else {
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter number of records to be added:");
-        int numRecords = scanner.nextInt();
+        System.out.println("Enter the details:");
+        String input = scanner.nextLine();
 
-        ParticipantInfo participantInfo = new ParticipantInfo();
+        Insurance insurance = extractDetails(input);
 
-        System.out.println("Enter the participant records (Participant name:IQ level):");
-        for (int i = 0; i < numRecords; i++) {
-            String record = scanner.next();
-            String[] parts = record.split(":");
-            participantInfo.getParticipantMap().put(parts[0].toLowerCase(), Integer.parseInt(parts[1]));
-        }
-
-        System.out.println("Enter the participant name to be searched:");
-        String searchName = scanner.next();
-
-        int foundIQ = participantInfo.findTheIQLevelForGivenParticipantName(searchName);
-
-        if (foundIQ != -1) {
-            System.out.println(foundIQ);
+        if (insurance != null) {
+            System.out.println("Policy Number: " + insurance.getPolicyNumber());
+            System.out.println("Insurance Provider: " + insurance.getInsuranceProvider());
+            System.out.println("Coverage Amount: " + insurance.getCoverageAmount());
+            System.out.println("Coverage Type: " + insurance.getCoverageType());
+            System.out.println("Duration in years: " + insurance.getDurationInYears());
+            
+            double maturityAmount = insurance.calculateMaturityAmount();
+            if (maturityAmount != -1) {
+                System.out.println("Maturity Amount: " + maturityAmount);
+            } else {
+                System.out.println("Invalid details");
+                System.out.println("Explanation: As durationInYears is invalid.");
+            }
         } else {
-            System.out.println(searchName + " is an invalid participant name");
-        }
-
-        System.out.println("Participant name with the highest IQ level are:");
-        List<String> highestIQParticipants = participantInfo.findTheHighestIQLevel();
-        for (String participant : highestIQParticipants) {
-            System.out.println(participant);
+            System.out.println("Invalid details");
         }
     }
 }
