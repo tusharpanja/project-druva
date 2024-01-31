@@ -1,108 +1,37 @@
 import java.util.Scanner;
 
-class Insurance {
-    private String policyNumber;
-    private String insuranceProvider;
-    private double coverageAmount;
-    private String coverageType;
-    private int durationInYears;
+class UserMainCode {
+    public static int stringFinder(String searchString, String str1, String str2) {
+        int indexStr1 = searchString.indexOf(str1);
+        int indexStr2 = searchString.indexOf(str2);
 
-    public Insurance(String policyNumber, String insuranceProvider, double coverageAmount, String coverageType, int durationInYears) {
-        this.policyNumber = policyNumber;
-        this.insuranceProvider = insuranceProvider;
-        this.coverageAmount = coverageAmount;
-        this.coverageType = coverageType;
-        this.durationInYears = durationInYears;
-    }
-
-    public String getPolicyNumber() {
-        return policyNumber;
-    }
-
-    public void setPolicyNumber(String policyNumber) {
-        this.policyNumber = policyNumber;
-    }
-
-    public String getInsuranceProvider() {
-        return insuranceProvider;
-    }
-
-    public void setInsuranceProvider(String insuranceProvider) {
-        this.insuranceProvider = insuranceProvider;
-    }
-
-    public double getCoverageAmount() {
-        return coverageAmount;
-    }
-
-    public void setCoverageAmount(double coverageAmount) {
-        this.coverageAmount = coverageAmount;
-    }
-
-    public String getCoverageType() {
-        return coverageType;
-    }
-
-    public void setCoverageType(String coverageType) {
-        this.coverageType = coverageType;
-    }
-
-    public int getDurationInYears() {
-        return durationInYears;
-    }
-
-    public void setDurationInYears(int durationInYears) {
-        this.durationInYears = durationInYears;
-    }
-
-    public double calculateMaturityAmount() {
-        if (coverageAmount <= 0 || durationInYears <= 0) {
-            return -1;
+        if (indexStr1 != -1 && indexStr2 != -1 && indexStr2 > indexStr1) {
+            return 1;
+        } else {
+            return 2;
         }
-
-        double maturityAmount = coverageAmount;
-        for (int i = 0; i < durationInYears; i++) {
-            maturityAmount += (maturityAmount * 0.05);
-        }
-
-        return maturityAmount;
     }
 }
 
-public class UserInterface {
-    public static Insurance extractDetails(String insuranceDetails) {
-        String[] details = insuranceDetails.split(":");
-        if (details.length == 5) {
-            return new Insurance(details[0], details[1], Double.parseDouble(details[2]), details[3], Integer.parseInt(details[4]));
-        } else {
-            return null;
-        }
-    }
-
+public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter the details:");
-        String input = scanner.nextLine();
+        System.out.println("Enter the SearchString:");
+        String searchString = scanner.nextLine();
 
-        Insurance insurance = extractDetails(input);
+        System.out.println("Enter Str1:");
+        String str1 = scanner.nextLine();
 
-        if (insurance != null) {
-            System.out.println("Policy Number: " + insurance.getPolicyNumber());
-            System.out.println("Insurance Provider: " + insurance.getInsuranceProvider());
-            System.out.println("Coverage Amount: " + insurance.getCoverageAmount());
-            System.out.println("Coverage Type: " + insurance.getCoverageType());
-            System.out.println("Duration in years: " + insurance.getDurationInYears());
-            
-            double maturityAmount = insurance.calculateMaturityAmount();
-            if (maturityAmount != -1) {
-                System.out.println("Maturity Amount: " + maturityAmount);
-            } else {
-                System.out.println("Invalid details");
-                System.out.println("Explanation: As durationInYears is invalid.");
-            }
+        System.out.println("Enter Str2:");
+        String str2 = scanner.nextLine();
+
+        int result = UserMainCode.stringFinder(searchString, str1, str2);
+
+        if (result == 1) {
+            System.out.println("yes");
         } else {
-            System.out.println("Invalid details");
+            System.out.println("no");
         }
     }
 }
